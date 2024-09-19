@@ -1,6 +1,4 @@
 ---
-# コミットテスト
-
 - name: Setup nginx server on myserver list
   hosts:
     - dev-servers
@@ -10,13 +8,6 @@
   tasks: 
     - name: Install the latest version of nginx
       command: amazon-linux-extras install nginx1 -y
-
-    - name: Generate config file
-      template: 
-        src: "tempmodule.conf.j2"
-        dest: "/home/ec2-user/tempmodule.conf"
-      vars: 
-        access_log_path: /var/log/tempmodule/access.log
 
     - name: Start nginx server
       service:
@@ -34,10 +25,25 @@
     - name: Get status of service
       command: systemctl status nginx
 
-  
+    - name: Create new user
+      user: 
+        name: new-user
+        group: users
+        createhome: yes #作成した新規ユーザのホームディレクトリを作成するかどうか
+        shell: /bin/bash
 
+    - name: Add authorized key for new user
+      authorized_key: 
+        user: new-user
+        key: "{{ lookup('file', '~/.ssh/authorized_keys') }}"
 
 # 以下、テンプレート
+    # - name: Generate config file
+    #   template: 
+    #     src: "tempmodule.conf.j2"
+    #     dest: "/home/ec2-user/tempmodule.conf"
+    #   vars: 
+    #     access_log_path: /var/log/tempmodule/access.log
 
     # - name: Ansible copy file to remote server
     #   copy: 
