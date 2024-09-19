@@ -60,6 +60,11 @@
     - name: Get status of PostgreSQL service
       command: systemctl status postgresql
 
+    - name: Get status
+      service:
+        name: postgresql
+        state: status
+
 # 以下、テンプレート
     # - name: Use custom module
     #   custom_module: 
