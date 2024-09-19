@@ -4,19 +4,19 @@
 - name: Install PostgreSQL
   yum: 
     name: postgresql-server
-    state: present
+    state: absent
 
-- name: Initialize PostgreSQL database
-  command: postgresql-setup initdb
+# - name: Initialize PostgreSQL database
+#   command: postgresql-setup initdb
 
-- name: Start PostgreSQL
-  service:
-    name: postgresql
-    state: started
-    enabled: true
+# - name: Start PostgreSQL
+#   service:
+#     name: postgresql
+#     state: started
+#     enabled: true
 
-- name: Get PostgreSQL version
-  command: psql --version
+# - name: Get PostgreSQL version
+#   command: psql --version
 
-- name: Get status of PostgreSQL service
-  command: systemctl status postgresql
+# - name: Get status of PostgreSQL service
+#   command: systemctl status postgresql
