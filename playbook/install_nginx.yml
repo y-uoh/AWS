@@ -25,19 +25,23 @@
     - name: Get status of service
       command: systemctl status nginx
 
-    - name: Create new user
+    - name: Change user's belonging group
       user: 
         name: new-user
-        group: users
-        createhome: yes #作成した新規ユーザのホームディレクトリを作成するかどうか
-        shell: /bin/bash
+        group: adm
+        append: yes #ユーザをグループに追加させるかどうか
+        # createhome: yes #作成した新規ユーザのホームディレクトリを作成するかどうか
+        # shell: /bin/bash 
 
-    - name: Add authorized key for new user
-      authorized_key: 
-        user: new-user
-        key: "{{ lookup('file', '~/.ssh/authorized_keys') }}"
+
 
 # 以下、テンプレート
+
+    # - name: Add authorized key for new user
+    #   authorized_key: 
+    #     user: new-user
+    #     key: "{{ lookup('file', '~/.ssh/authorized_keys') }}"
+
     # - name: Generate config file
     #   template: 
     #     src: "tempmodule.conf.j2"
