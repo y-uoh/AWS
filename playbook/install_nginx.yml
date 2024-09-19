@@ -39,22 +39,36 @@
           </body>
           </html>
         dest: "{{ html_path }}index.html"
-      register: file_copy
 
-    - debug:
-        msg: "コンテンツのコピーに成功しました。"
-      when: file_copy.changed
-    
-    - name: Use custom module
-      custom_module: 
-        input_file: "{{ html_path }}index.html"
-      register: result
+    - name: Install PostgreSQL
+      yum: 
+        name: postgresql-server
+        state: present
 
-    - name: Print result
-      debug:
-        var: result
+    - name: Initialize PostgreSQL database
+      command: postgresql-setup initdb
+
+    - name: Start PostgreSQL
+      service:
+        name: postgresql
+        state: started
+        enabled: true
+
+    - name: Get PostgreSQL version
+      command: psql --version
+
+    - name: Get status of PostgreSQL service
+      command: systemctl status postgresql
 
 # 以下、テンプレート
+    # - name: Use custom module
+    #   custom_module: 
+    #     input_file: "{{ html_path }}index.html"
+    #   register: result
+
+    # - name: Print result
+    #   debug:
+    #     var: result
 
     # - name: Reboot
     #   reboot:
