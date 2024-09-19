@@ -25,12 +25,24 @@
     - name: Get status of service
       command: systemctl status nginx
 
-    - name: Delete user
-      user: 
-        name: new-user
-        state: absent
+    - name: Collect host information
+      setup:
+        gather_subset: #取得したい情報の種類を指定
+          - "hardwere"
+          - "network"
+      register: host_info
+
+    - debug:
+        var: host_info
+
+
 
 # 以下、テンプレート
+
+    # - name: Delete user
+    #   user: 
+    #     name: new-user
+    #     state: absent
 
     # - name: Change user's belonging group
     #   user: 
