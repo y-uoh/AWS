@@ -48,7 +48,7 @@
     - name: Use custom module
       cutom_module:
         input_file: "{{ html_path }}index.html"
-    register: result
+      register: result
 
     - name: Print result
       debug:
