@@ -6,8 +6,6 @@
   become: True  #becomeはsudoでの実行を許可するかを指定するディレクティブ
 
   tasks: 
-
-
     - name: Install the latest version of nginx
       command: amazon-linux-extras install nginx1 -y
 
@@ -41,6 +39,11 @@
           </body>
           </html>
         dest: "{{ html_path }}index.html"
+        register: file_copy
+
+    - debug:
+        msg: "コンテンツのコピーに成功しました。"
+      when: file_copy.changed
     
     - name: Use custom module
       cutom_module:
