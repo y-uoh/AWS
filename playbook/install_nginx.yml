@@ -28,10 +28,10 @@
     - name: Collect host information
       setup:
         gather_subset: #取得したい情報の種類を指定
-          - "hardwere"
+          - "hardware"
           - "network"
       register: host_info
-
+      
     - debug:
         var: host_info
 
