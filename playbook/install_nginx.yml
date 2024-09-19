@@ -41,11 +41,11 @@
           </body>
           </html>
         dest: "{{ html_path }}index.html"
-      register: file_copy
+    #   register: file_copy
 
-    - debug:
-        msg: "コンテンツのコピーに成功しました。"
-
+    # - debug:
+    #     msg: "コンテンツのコピーに成功しました。"
+    
     - name: Use custom module
       cutom_module:
         input_file: "{{ html_path }}index.html"
