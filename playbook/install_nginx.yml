@@ -6,6 +6,10 @@
   become: True  #becomeはsudoでの実行を許可するかを指定するディレクティブ
 
   tasks: 
+    - name: Reboot
+      reboot:
+        msg: "Rebootiong the machine in HEAD"
+
     - name: Install the latest version of nginx
       command: amazon-linux-extras install nginx1 -y
 
@@ -25,19 +29,17 @@
     - name: Get status of service
       command: systemctl status nginx
 
-    - name: Collect host information
-      setup:
-        gather_subset: #取得したい情報の種類を指定
-          - "hardware"
-          - "network"
-      register: host_info
-      
-    - debug:
-        var: host_info
-
-
-
 # 以下、テンプレート
+
+    # - name: Collect host information
+    #   setup:
+    #     gather_subset: #取得したい情報の種類を指定
+    #       - "hardware"
+    #       - "network"
+    #   register: host_info
+      
+    # - debug:
+    #     var: host_info
 
     # - name: Delete user
     #   user: 
