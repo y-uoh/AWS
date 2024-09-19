@@ -5,65 +5,64 @@
     #- test-servers
   become: True  #becomeはsudoでの実行を許可するかを指定するディレクティブ
 
-  tasks: 
-    - name: Install the latest version of nginx
-      command: amazon-linux-extras install nginx1 -y
+  roles:
+    - web_server_role
+    - db_server_role
 
-    - name: Start nginx server
-      service:
-        name: nginx
-        state: started
+  # tasks: 
+  #   - name: Install the latest version of nginx
+  #     command: amazon-linux-extras install nginx1 -y
 
-    - name: Enable nginx service
-      service:
-        name: nginx
-        enabled: yes
+  #   - name: Start nginx server
+  #     service:
+  #       name: nginx
+  #       state: started
 
-    - name: Get nginx Installed version
-      command: nginx -v
+  #   - name: Enable nginx service
+  #     service:
+  #       name: nginx
+  #       enabled: yes
 
-    - name: Get status of service
-      command: systemctl status nginx
+  #   - name: Get nginx Installed version
+  #     command: nginx -v
 
-    - name: Ansible copy file to remote server
-      copy: 
-        content: |
-          <!DOCTYPE html>
-          <html>
-          <head>
-          <meta charset="UTF-8">
-          </head>
-          <body>
-          <h1>このページはcopyモジュールをcontentパラメータを使用しています。</h1>
-          <h2>pAssWoRd tesT SucceCe</h2>
-          </body>
-          </html>
-        dest: "{{ html_path }}index.html"
+  #   - name: Get status of service
+  #     command: systemctl status nginx
 
-    - name: Install PostgreSQL
-      yum: 
-        name: postgresql-server
-        state: present
+  #   - name: Ansible copy file to remote server
+  #     copy: 
+  #       content: |
+  #         <!DOCTYPE html>
+  #         <html>
+  #         <head>
+  #         <meta charset="UTF-8">
+  #         </head>
+  #         <body>
+  #         <h1>このページはcopyモジュールをcontentパラメータを使用しています。</h1>
+  #         <h2>pAssWoRd tesT SucceCe</h2>
+  #         </body>
+  #         </html>
+  #       dest: "{{ html_path }}index.html"
 
-    - name: Initialize PostgreSQL database
-      command: postgresql-setup initdb
+  #   - name: Install PostgreSQL
+  #     yum: 
+  #       name: postgresql-server
+  #       state: present
 
-    - name: Start PostgreSQL
-      service:
-        name: postgresql
-        state: started
-        enabled: true
+  #   - name: Initialize PostgreSQL database
+  #     command: postgresql-setup initdb
 
-    - name: Get PostgreSQL version
-      command: psql --version
+  #   - name: Start PostgreSQL
+  #     service:
+  #       name: postgresql
+  #       state: started
+  #       enabled: true
 
-    - name: Get status of PostgreSQL service
-      command: systemctl status postgresql
+  #   - name: Get PostgreSQL version
+  #     command: psql --version
 
-    - name: Get status
-      service:
-        name: postgresql
-        state: status
+  #   - name: Get status of PostgreSQL service
+  #     command: systemctl status postgresql
 
 # 以下、テンプレート
     # - name: Use custom module

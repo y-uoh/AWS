@@ -1,0 +1,36 @@
+---
+# path -> /roles/web_server_role/tasks/main.yml
+
+- name: Install the latest version of nginx
+  command: amazon-linux-extras install nginx1 -y
+
+- name: Start nginx server
+  service:
+    name: nginx
+    state: started
+
+- name: Enable nginx service
+  service:
+    name: nginx
+    enabled: yes
+
+- name: Get nginx Installed version
+  command: nginx -v
+
+- name: Get status of service
+  command: systemctl status nginx
+
+- name: Ansible copy file to remote server
+  copy: 
+    content: |
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <meta charset="UTF-8">
+      </head>
+      <body>
+      <h1>このページはcopyモジュールをcontentパラメータを使用しています。</h1>
+      <h2>pAssWoRd tesT SucceCe</h2>
+      </body>
+      </html>
+    dest: "{{ html_path }}index.html"
