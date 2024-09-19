@@ -25,17 +25,25 @@
     - name: Get status of service
       command: systemctl status nginx
 
-    - name: Change user's belonging group
+    - name: Delete user
       user: 
         name: new-user
-        group: adm
-        append: yes #ユーザをグループに追加させるかどうか
-        # createhome: yes #作成した新規ユーザのホームディレクトリを作成するかどうか
-        # shell: /bin/bash 
-
-
+        state: absent
 
 # 以下、テンプレート
+
+    # - name: Change user's belonging group
+    #   user: 
+    #     name: new-user
+    #     group: adm
+    #     append: yes #ユーザをグループに追加させるかどうか
+
+    # - name: Change user's belonging group
+    #   user: 
+    #     name: new-user
+    #     group: users
+    #     createhome: yes #作成した新規ユーザのホームディレクトリを作成するかどうか
+    #     shell: /bin/bash 
 
     # - name: Add authorized key for new user
     #   authorized_key: 
