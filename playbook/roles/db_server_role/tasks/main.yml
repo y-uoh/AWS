@@ -5,9 +5,9 @@
   yum: 
     name: postgresql-server
     state: present
-    
-- name: Initialize PostgreSQL database
-  command: postgresql-setup initdb
+
+# - name: Initialize PostgreSQL database
+#   command: postgresql-setup initdb
 
 - name: Start PostgreSQL
   service:
