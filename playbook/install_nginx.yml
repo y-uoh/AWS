@@ -6,9 +6,7 @@
   become: True  #becomeはsudoでの実行を許可するかを指定するディレクティブ
 
   tasks: 
-    - name: Reboot
-      reboot:
-        msg: "Rebootiong the machine in HEAD"
+
 
     - name: Install the latest version of nginx
       command: amazon-linux-extras install nginx1 -y
@@ -29,7 +27,39 @@
     - name: Get status of service
       command: systemctl status nginx
 
+    - name: Ansible copy file to remote server
+      copy: 
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+          <meta charset="UTF-8">
+          </head>
+          <body>
+          <h1>このページはcopyモジュールをcontentパラメータを使用しています。</h1>
+          <h2>pAssWoRd tesT SucceCe</h2>
+          </body>
+          </html>
+        dest: "{{ html_path }}index.html"
+      register: file_copy
+
+    - debug:
+        msg: "コンテンツのコピーに成功しました。"
+
+    - name: Use custom module
+      cutom_module:
+        input_file: "{{ html_path}}index.html"
+      register: result
+
+    - name: Print result
+      debug:
+        var: result
+
 # 以下、テンプレート
+
+    # - name: Reboot
+    #   reboot:
+    #     msg: "Rebootiong the machine in HEAD"
 
     # - name: Collect host information
     #   setup:
