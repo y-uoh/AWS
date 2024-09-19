@@ -1,4 +1,4 @@
----test
+
 - name: Setup nginx server on myserver list
   hosts:
     - dev-servers
