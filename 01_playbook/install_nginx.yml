@@ -1,0 +1,150 @@
+---
+- name: Setup nginx server on myserver list
+  hosts:
+    - dev-servers
+    #- test-servers
+  become: True  #becomeはsudoでの実行を許可するかを指定するディレクティブ
+
+  tasks: 
+    - name: Install the latest version of nginx
+      command: amazon-linux-extras install nginx1 -y
+
+    - name: Generate config file
+      template: 
+        src: "tempmodule.conf.j2"
+        dest: "/home/ec2-user/tempmodule.comf"
+      vars: 
+        access_lob_path: /var/log/tempmodule/access.log
+        
+
+    - name: Start nginx server
+      service:
+        name: nginx
+        state: started
+
+    - name: Enable nginx service
+      service:
+        name: nginx
+        enabled: yes
+
+    - name: Get nginx Installed version
+      command: nginx -v
+
+    - name: Get status of service
+      command: systemctl status nginx
+
+  
+
+
+# 以下、テンプレート
+
+    # - name: Ansible copy file to remote server
+    #   copy: 
+    #     content: |
+    #       <!DOCTYPE html>
+    #       <html>
+    #       <head>
+    #       <meta charset="UTF-8">
+    #       </head>
+    #       <body>
+    #       <h1>このページはcopyモジュールをcontentパラメータを使用しています。</h1>
+    #       <a href="download-directory/download-file.txt" download>download-file.txtをダウンロード</a> 
+    #       </body>
+    #       </html>
+    #     dest: "{{ html_path }}index.html"
+    #   register: file_copy
+
+    # - name: Print file copy status
+    #   debug:
+    #     msg: "ファイルのコピーに成功しました。"
+    #   when: file_copy.changed
+
+    # - name: Download download-file.txt
+    #   get_url: 
+    #     url: http://localhost/download-directory/download-file.txt
+    #     dest: /home/ec2-user/
+    #   register: file_download
+
+    # - name: Print file donwload status
+    #   debug: 
+    #     msg: "ファイルのダウンロードに成功しました。"
+    #   when: file_download.changed
+
+    # - name: Run shell script
+    #   shell: |
+    #     cd /usr/share/nginx/html/
+    #     mkdir download-directory
+    #     cd download-directory
+    #     touch download-file.txt
+
+    # - name: Read external variable file
+    #   include_vars: vars/vars.yml
+    
+    # - name: Ansible copy file to remote server
+    #   copy: 
+    #     content: |
+    #       <!DOCTYPE html>
+    #       <html>
+    #       <head>
+    #       <meta charset="UTF-8">
+    #       </head>
+    #       <body>
+    #       <h1>このページはscriptモジュールを使用してコピーしたページです！</h1>
+    #       </body>
+    #       </html>
+    #     dest: "/home/ec2-user/index.html"
+
+    # - name: Run a script
+    #   script: /home/ec2-user/script.sh
+
+    # - name: Create directory
+    #   file:
+    #     path: /home/ec2-user/filemodule
+    #     state: directory
+
+    # - name: Delete file
+    #   file:
+    #     path: /home/ec2-user/filemodule/filemodule.txt
+    #     state: absent
+    #   register: file_delete
+
+    # - name: Print file delete status
+    #   debug:
+    #     msg: "ファイルの削除に成功しました。"
+    #   when: file_delete.changed
+
+    # - name: Ansible insert line to remote server file
+    #   lineinfile:
+    #     path: "{{ html_path }}index.html"
+    #     line: "<h1>この行はlineinfileで追加しています！</h1>"
+    #     insertafter: "^<h1>.*$" #insertafer:行挿入する位置指定
+    #   register: insert_line
+
+    # - name: Print insert status
+    #   debug:
+    #     msg: "行追加に成功しました。"
+    #   when: insert_line.changed
+
+    # - name: Ansible change line to remote server file
+    #   lineinfile:
+    #     path: "{{ html_path }}index.html"
+    #     line: "<h1>この行はlineinfileで変更しています！</h1>"
+    #     regexp: "^<h1>この行はlineinfileで追加しています！</h1>$" #regexp:変更する行指定
+    #   register: change_line
+
+    # - name: Print change status
+    #   debug:
+    #     msg: "行変更に成功しました。"
+    #   when: change_line.changed
+  
+    # - name: Ansible delete line to remote server file
+    #   lineinfile:
+    #     path: "{{ html_path }}index.html"
+    #     state: absent
+    #     regexp: "^<h1>この行はlineinfileで変更しています！</h1>$" #regexp:変更する行指定
+    #   register: delete_line
+
+    # - name: Print delete status
+    #   debug:
+    #     msg: "行削除に成功しました。"
+    #   when: delete_line.changed
