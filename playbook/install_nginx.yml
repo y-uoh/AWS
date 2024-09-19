@@ -46,7 +46,7 @@
       when: file_copy.changed
     
     - name: Use custom module
-      cutom_module:
+      custom_module: 
         input_file: "{{ html_path }}index.html"
       register: result
 
